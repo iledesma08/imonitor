@@ -10,7 +10,9 @@
 
 int main(int argc, char* argv[])
 {
-
+    // Inicializamos las métricas y el mutex
+    init_metrics();
+    
     // Creamos un hilo para exponer las métricas vía HTTP
     pthread_t tid;
     if (pthread_create(&tid, NULL, expose_metrics, NULL) != 0)
