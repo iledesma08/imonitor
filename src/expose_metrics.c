@@ -318,7 +318,8 @@ void init_metrics()
     }
 
     // Creamos la metrica para la potencia entregada por la bateria
-    battery_power_metric = prom_gauge_new("battery_power_watts", "Potencia entregada por la bateria en vatios", 0, NULL);
+    battery_power_metric =
+        prom_gauge_new("battery_power_watts", "Potencia entregada por la bateria en vatios", 0, NULL);
     if (battery_power_metric == NULL)
     {
         fprintf(stderr, "Error al crear la metrica de potencia entregada por la bateria\n");
