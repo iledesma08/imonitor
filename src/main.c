@@ -30,9 +30,10 @@ int main(int argc, char* argv[])
         update_disk_gauge();
         update_battery_gauge();
         update_cpu_temperature_gauge();
-        update_process_count_gauge();
-        update_upload_speed_gauge(RED_INTERFACE);
-        update_downloaded_bytes_gauge(RED_INTERFACE);
+        update_process_count();
+        update_uploaded_bytes(RED_INTERFACE);
+        update_downloaded_bytes(RED_INTERFACE);
+        update_system_power_gauge();
         sleep(SLEEP_TIME);
     }
 

@@ -134,14 +134,14 @@ double get_battery_percentage()
     FILE* fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
     if (fp == NULL)
     {
-        perror("Error al abrir el archivo de capacidad de la batería");
+        perror("Error al abrir el archivo de capacidad de la bateria");
         return -1.0;
     }
 
     int battery_percentage;
     if (fscanf(fp, "%d", &battery_percentage) != 1)
     {
-        perror("Error al leer el porcentaje de batería");
+        perror("Error al leer el porcentaje de bateria");
         fclose(fp);
         return -1.0;
     }
@@ -235,7 +235,7 @@ unsigned long get_bytes_transmitted(const char* interface)
     return bytes_transmitted;
 }
 
-double get_upload_speed(const char* interface, int interval)
+double get_uploaded_bytes(const char* interface, int interval)
 {
     unsigned long bytes1 = get_bytes_transmitted(interface);
     sleep(interval);
@@ -292,4 +292,31 @@ double get_downloaded_bytes(const char* interface, int interval)
     }
 
     return (double)(bytes2 - bytes1) / interval;  // Velocidad en bytes por segundo
+}
+
+double get_system_power_consumption()
+{
+    FILE* fp;
+    int power;
+
+    // Abrir el archivo que contiene la potencia en microvatios
+    fp = fopen("/sys/class/power_supply/BAT0/power_now", "r");
+    if (fp == NULL)
+    {
+        perror("Error al abrir el archivo de potencia");
+        return -1.0;
+    }
+
+    // Leer la potencia en microvatios
+    if (fscanf(fp, "%d", &power) != 1)
+    {
+        perror("Error al leer la potencia");
+        fclose(fp);
+        return -1.0;
+    }
+
+    fclose(fp);
+
+    // Convertir microvatios a vatios
+    return (double)power / 1e6;  // De microvatios a vatios
 }

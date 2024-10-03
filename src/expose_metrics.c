@@ -1,5 +1,5 @@
 #include "expose_metrics.h"
-#define METRICS_COUNT 8
+#define METRICS_COUNT 9
 #define SLEEP_TIME 1 
 
 /** Mutex para sincronización de hilos */
@@ -24,10 +24,13 @@ static prom_gauge_t* cpu_temperature_metric;
 static prom_gauge_t* process_count_metric;
 
 /** Métrica de Prometheus para la velocidad de subida */
-static prom_gauge_t* upload_speed_metric;
+static prom_gauge_t* uploaded_bytes_metric;
 
 /** Métrica de Prometheus para la velocidad de descarga */
 static prom_gauge_t* downloaded_bytes_metric;
+
+/** Métrica de Prometheus para la potencia consumida */
+static prom_gauge_t* system_power_metric;
 
 prom_metric_t* metrics[METRICS_COUNT];
 
@@ -38,8 +41,9 @@ void register_metrics() {
     metrics[3] = battery_percentage_metric;
     metrics[4] = cpu_temperature_metric;
     metrics[5] = process_count_metric;
-    metrics[6] = upload_speed_metric;
+    metrics[6] = uploaded_bytes_metric;
     metrics[7] = downloaded_bytes_metric;
+    metrics[8] = system_power_metric;
 
     int i;
     for (i = 0; i < METRICS_COUNT; i++) {
@@ -105,7 +109,7 @@ void update_battery_gauge()
     }
     else
     {
-        fprintf(stderr, "Error al obtener el porcentaje de batería\n");
+        fprintf(stderr, "Error al obtener el porcentaje de bateria\n");
     }
 }
 
@@ -124,7 +128,7 @@ void update_cpu_temperature_gauge()
     }
 }
 
-void update_process_count_gauge()
+void update_process_count()
 {
     int process_count = get_process_count();
     if (process_count >= 0)
@@ -139,22 +143,22 @@ void update_process_count_gauge()
     }
 }
 
-void update_upload_speed_gauge(const char* interface)
+void update_uploaded_bytes(const char* interface)
 {
-    double speed = get_upload_speed(interface, 1);  // Intervalo de 1 segundo
+    double speed = get_uploaded_bytes(interface, 1);  // Intervalo de 1 segundo
     if (speed >= 0)
     {
         pthread_mutex_lock(&lock);
-        prom_gauge_set(upload_speed_metric, speed, NULL);
+        prom_gauge_set(uploaded_bytes_metric, speed, NULL);
         pthread_mutex_unlock(&lock);
     }
     else
     {
-        fprintf(stderr, "Error al obtener la velocidad de subida\n");
+        fprintf(stderr, "Error al obtener los bytes subidos\n");
     }
 }
 
-void update_downloaded_bytes_gauge(const char* interface)
+void update_downloaded_bytes(const char* interface)
 {
     double speed = get_downloaded_bytes(interface, 1);  // Intervalo de 1 segundo
     if (speed >= 0)
@@ -165,7 +169,22 @@ void update_downloaded_bytes_gauge(const char* interface)
     }
     else
     {
-        fprintf(stderr, "Error al obtener la velocidad de descarga\n");
+        fprintf(stderr, "Error al obtener los bytes descargados\n");
+    }
+}
+
+void update_system_power_gauge()
+{
+    double power = get_system_power_consumption();  // Obtener la potencia en vatios
+    if (power >= 0)
+    {
+        pthread_mutex_lock(&lock);
+        prom_gauge_set(system_power_metric, power, NULL);
+        pthread_mutex_unlock(&lock);
+    }
+    else
+    {
+        fprintf(stderr, "Error al obtener la potencia del sistema\n");
     }
 }
 
@@ -250,8 +269,8 @@ void init_metrics()
     }
 
     // Creamos la métrica para la velocidad de subida
-    upload_speed_metric = prom_gauge_new("upload_speed_bytes_per_second", "VBytes subidos por segundo", 0, NULL);
-    if (upload_speed_metric == NULL)
+    uploaded_bytes_metric = prom_gauge_new("uploaded_bytes_per_second", "Bytes subidos por segundo", 0, NULL);
+    if (uploaded_bytes_metric == NULL)
     {
         fprintf(stderr, "Error al crear la métrica de velocidad de subida\n");
     }
@@ -261,6 +280,13 @@ void init_metrics()
     if (downloaded_bytes_metric == NULL)
     {
         fprintf(stderr, "Error al crear la métrica de velocidad de descarga\n");
+    }
+
+    // Creamos la métrica para la potencia del sistema
+    system_power_metric = prom_gauge_new("system_power_watts", "Potencia del sistema en vatios", 0, NULL);
+    if (system_power_metric == NULL)
+    {
+        fprintf(stderr, "Error al crear la métrica de potencia del sistema\n");
     }
 
     // Registramos las métricas en el registro de coleccionistas de Prometheus

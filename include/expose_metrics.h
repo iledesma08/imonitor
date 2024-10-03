@@ -48,19 +48,24 @@ void update_cpu_temperature_gauge();
 /**
  * @brief Actualiza la métrica de cantidad de procesos.
  */
-void update_process_count_gauge();
+void update_process_count();
 
 /**
  * @brief Actualiza la métrica de velocidad de subida.
  * @param interface Interfaz de red a monitorear.
  */
-void update_upload_speed_gauge(const char* interface);
+void update_uploaded_bytes(const char* interface);
 
 /**
  * @brief Actualiza la métrica de velocidad de descarga.
  * @param interface Interfaz de red a monitorear.
  */
-void update_downloaded_bytes_gauge(const char* interface);
+void update_downloaded_bytes(const char* interface);
+
+/**
+ * @brief Actualiza la métrica de potencia del sistema.
+ */
+void update_system_power_gauge();
 
 /**
  * @brief Función del hilo para exponer las métricas vía HTTP en el puerto 8000.

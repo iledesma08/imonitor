@@ -91,7 +91,7 @@ unsigned long get_bytes_transmitted(const char* interface);
  * @param interval Intervalo de tiempo en segundos.
  * @return Velocidad de subida en bytes por segundo, o -1.0 en caso de error.
  */
-double get_upload_speed(const char* interface, int interval);
+double get_uploaded_bytes(const char* interface, int interval);
 
 /**
  * @brief Obtiene la cantidad de bytes recibidos por una interfaz de red.
@@ -115,3 +115,13 @@ unsigned long get_bytes_received(const char* interface);
  * @return Velocidad de bajada en bytes por segundo, o -1.0 en caso de error.
  */
 double get_downloaded_bytes(const char* interface, int interval);
+
+/**
+ * @brief Obtiene el consumo de energía del sistema desde /sys/class/power_supply.
+ *
+ * Lee los valores de voltaje y corriente de la batería desde /sys/class/power_supply
+ * y calcula el consumo de energía del sistema.
+ *
+ * @return Consumo de energía en vatios, o -1.0 en caso de error.
+ */
+double get_system_power_consumption();
