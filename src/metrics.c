@@ -32,7 +32,7 @@ double get_memory_usage()
     // Verificar si se encontraron ambos valores
     if (total_mem == 0 || free_mem == 0)
     {
-        fprintf(stderr, "Error al leer la información de memoria desde /proc/meminfo\n");
+        fprintf(stderr, "Error al leer la informacion de memoria desde /proc/meminfo\n");
         return -1.0;
     }
 
@@ -118,7 +118,7 @@ double get_disk_usage()
 
     if (statvfs("/", &buf) != 0)
     {
-        perror("Error al obtener la información del sistema de archivos");
+        perror("Error al obtener la informacion del sistema de archivos");
         return -1.0;
     }
 
@@ -173,80 +173,69 @@ double get_cpu_temperature()
     return temperature_millidegrees / 1000;
 }
 
-int get_process_count()
+void get_process_states(int* total, int* suspended, int* ready, int* uninterruptible, int* stopped, int* zombie,
+                        int* running)
 {
-    FILE* fp = fopen("/proc/stat", "r");
-    if (fp == NULL)
+    DIR* proc_dir = opendir("/proc");
+    if (proc_dir == NULL)
     {
-        perror("Error al abrir /proc/stat");
-        return -1;
+        perror("Error al abrir /proc");
+        return;
     }
 
-    char buffer[256];
-    int process_count = -1;
+    struct dirent* entry;
+    *total = 0;
+    *suspended = 0;
+    *ready = 0;
+    *uninterruptible = 0; // Uninterrumpible sleep
+    *stopped = 0;
+    *zombie = 0;
+    *running = 0;
 
-    // Leer línea por línea buscando la que empiece con "processes"
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    while ((entry = readdir(proc_dir)) != NULL)
     {
-        if (sscanf(buffer, "processes %d", &process_count) == 1)
+        if (isdigit(entry->d_name[0]))
         {
-            break;
+            char path[BUFFER_SIZE];
+            snprintf(path, sizeof(path), "/proc/%s/stat", entry->d_name);
+
+            FILE* fp = fopen(path, "r");
+            if (fp == NULL)
+            {
+                continue;
+            }
+
+            char state;
+            if (fscanf(fp, "%*d %*s %c", &state) == 1)
+            {
+                (*total)++;
+                switch (state)
+                {
+                case 'S':
+                    (*suspended)++;
+                    break;
+                case 'R':
+                    (*ready)++;
+                    break;
+                case 'D':
+                    (*uninterruptible)++;
+                    break;
+                case 'T':
+                    (*stopped)++;
+                    break;
+                case 'Z':
+                    (*zombie)++;
+                    break;
+                }
+            }
+
+            fclose(fp);
         }
     }
 
-    fclose(fp);
+    closedir(proc_dir);
 
-    if (process_count == -1)
-    {
-        fprintf(stderr, "No se pudo obtener la cantidad de procesos\n");
-    }
-
-    return process_count;
-}
-
-unsigned long get_bytes_transmitted(const char* interface)
-{
-    FILE* fp = fopen("/proc/net/dev", "r");
-    if (fp == NULL)
-    {
-        perror("Error al abrir /proc/net/dev");
-        return -1;
-    }
-
-    char buffer[256];
-    unsigned long bytes_transmitted = 0;
-
-    // Saltar las dos primeras líneas de encabezado
-    fgets(buffer, sizeof(buffer), fp);
-    fgets(buffer, sizeof(buffer), fp);
-
-    // Buscar la interfaz deseada
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
-    {
-        if (strstr(buffer, interface) != NULL)
-        {
-            // Parsear la línea para obtener los bytes transmitidos (el décimo campo)
-            sscanf(buffer, "%*[^:]: %*lu %*lu %*lu %*lu %*lu %*lu %*lu %lu", &bytes_transmitted);
-            break;
-        }
-    }
-
-    fclose(fp);
-    return bytes_transmitted;
-}
-
-double get_uploaded_bytes(const char* interface, int interval)
-{
-    unsigned long bytes1 = get_bytes_transmitted(interface);
-    sleep(interval);
-    unsigned long bytes2 = get_bytes_transmitted(interface);
-
-    if (bytes1 == (unsigned long)-1 || bytes2 == (unsigned long)-1)
-    {
-        return -1.0; // Error al obtener los bytes transmitidos
-    }
-
-    return (double)(bytes2 - bytes1) / interval; // Velocidad en bytes por segundo
+    *running = *total - *suspended - *ready - *uninterruptible - *stopped - *zombie;
 }
 
 unsigned long get_bytes_received(const char* interface)
@@ -258,10 +247,10 @@ unsigned long get_bytes_received(const char* interface)
         return -1;
     }
 
-    char buffer[256];
+    char buffer[BUFFER_SIZE];
     unsigned long bytes_received = 0;
 
-    // Saltar las dos primeras líneas de encabezado
+    // Saltar las dos primeras lineas de encabezado
     fgets(buffer, sizeof(buffer), fp);
     fgets(buffer, sizeof(buffer), fp);
 
@@ -270,7 +259,7 @@ unsigned long get_bytes_received(const char* interface)
     {
         if (strstr(buffer, interface) != NULL)
         {
-            // Parsear la línea para obtener los bytes recibidos (el primer campo después del nombre de la interfaz)
+            // Parsear la linea para obtener los bytes recibidos (el primer campo despues del nombre de la interfaz)
             sscanf(buffer, "%*s %lu", &bytes_received);
             break;
         }
@@ -288,13 +277,13 @@ double get_downloaded_bytes(const char* interface, int interval)
 
     if (bytes1 == (unsigned long)-1 || bytes2 == (unsigned long)-1)
     {
-        return -1.0;  // Error al obtener los bytes recibidos
+        return -1.0; // Error al obtener los bytes recibidos
     }
 
-    return (double)(bytes2 - bytes1) / interval;  // Velocidad en bytes por segundo
+    return (double)(bytes2 - bytes1) / interval; // Velocidad en bytes por segundo
 }
 
-double get_system_power_consumption()
+double get_battery_power_consumption()
 {
     FILE* fp;
     int power;
@@ -318,5 +307,5 @@ double get_system_power_consumption()
     fclose(fp);
 
     // Convertir microvatios a vatios
-    return (double)power / 1e6;  // De microvatios a vatios
+    return (double)power / 1e6; // De microvatios a vatios
 }

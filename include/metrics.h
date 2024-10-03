@@ -1,15 +1,24 @@
 /**
  * @file metrics.h
- * @brief Funciones para obtener el uso de CPU y memoria desde el sistema de archivos /proc.
+ * @brief Programa para leer metricas del sistema.
+ *
+ * Este programa lee diversas metricas del sistema, como el uso de memoria, CPU,
+ * disco, bateria, temperatura de la CPU, cantidad de procesos en cada estado y
+ * velocidad de descarga de una interfaz de red.
+ *
+ * Las metricas se leen desde varios archivos en el sistema de archivos de Linux,
+ * como /proc/meminfo, /proc/stat, /proc/statvfs, /sys/class/power_supply y /sys/class/thermal.
  */
 
+#include <ctype.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/statvfs.h>
+#include <unistd.h>
 
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 512
 
 /**
  * @brief Obtiene el porcentaje de uso de memoria desde /proc/meminfo.
@@ -34,7 +43,7 @@ double get_cpu_usage();
 /**
  * @brief Obtiene el porcentaje de uso de disco desde /proc/statvfs.
  *
- * Lee la información del sistema de archivos desde /proc/statvfs y calcula el
+ * Lee la informacion del sistema de archivos desde /proc/statvfs y calcula el
  * porcentaje de uso de disco.
  *
  * @return Uso de disco como porcentaje (0.0 a 100.0), o -1.0 en caso de error.
@@ -42,12 +51,12 @@ double get_cpu_usage();
 double get_disk_usage();
 
 /**
- * @brief Obtiene el porcentaje de batería restante desde /sys/class/power_supply.
+ * @brief Obtiene el porcentaje de bateria restante desde /sys/class/power_supply.
  *
- * Lee el nivel de batería restante desde /sys/class/power_supply y calcula el
- * porcentaje de batería restante.
+ * Lee el nivel de bateria restante desde /sys/class/power_supply y calcula el
+ * porcentaje de bateria restante.
  *
- * @return Porcentaje de batería restante (0.0 a 100.0), o -1.0 en caso de error.
+ * @return Porcentaje de bateria restante (0.0 a 100.0), o -1.0 en caso de error.
  */
 double get_battery_percentage();
 
@@ -62,47 +71,22 @@ double get_battery_percentage();
 double get_cpu_temperature();
 
 /**
- * @brief Obtiene la cantidad de procesos en ejecución desde /proc/loadavg.
+ * @brief Obtiene la cantidad de procesos en cada estado desde /proc.
  *
- * Lee la cantidad de procesos en ejecución desde /proc/loadavg y la devuelve.
+ * Lee el estado de cada proceso desde /proc y cuenta la cantidad de procesos
+ * totales, suspendidos y listos.
  *
- * @return Cantidad de procesos en ejecución, o -1 en caso de error.
+ * @param total Puntero a la variable donde se almacenara la cantidad total de procesos.
+ * @param suspended Puntero a la variable donde se almacenara la cantidad de procesos suspendidos.
+ * @param ready Puntero a la variable donde se almacenara la cantidad de procesos listos.
+ * @param uninterruptible Puntero a la variable donde se almacenara la cantidad de procesos en estado suspensión
+ * ininterruptible.
+ * @param stopped Puntero a la variable donde se almacenara la cantidad de procesos detenidos.
+ * @param zombie Puntero a la variable donde se almacenara la cantidad de procesos zombie.
+ * @param running Puntero a la variable donde se almacenara la cantidad de procesos en ejecución.
  */
-int get_process_count();
-
-/**
- * @brief Obtiene la cantidad de bytes transmitidos por una interfaz de red.
- *
- * Lee la cantidad de bytes transmitidos por una interfaz de red desde
- * /proc/net/dev y la devuelve.
- *
- * @param interface Nombre de la interfaz de red (eth0 o wlan0).
- * @return Cantidad de bytes transmitidos, o -1 en caso de error.
- */
-unsigned long get_bytes_transmitted(const char* interface);
-
-/**
- * @brief Obtiene la velocidad de subida de una interfaz de red.
- *
- * Lee la cantidad de bytes transmitidos por una interfaz de red en dos momentos
- * y calcula la velocidad de subida en bytes por segundo.
- *
- * @param interface Nombre de la interfaz de red (eth0 o wlan0).
- * @param interval Intervalo de tiempo en segundos.
- * @return Velocidad de subida en bytes por segundo, o -1.0 en caso de error.
- */
-double get_uploaded_bytes(const char* interface, int interval);
-
-/**
- * @brief Obtiene la cantidad de bytes recibidos por una interfaz de red.
- *
- * Lee la cantidad de bytes recibidos por una interfaz de red desde
- * /proc/net/dev y la devuelve.
- *
- * @param interface Nombre de la interfaz de red (ej.: eth0 o wlan0).
- * @return Cantidad de bytes transmitidos, o -1 en caso de error.
- */
-unsigned long get_bytes_received(const char* interface);
+void get_process_states(int* total, int* suspended, int* ready, int* uninterruptible, int* stopped, int* zombie,
+                        int* running);
 
 /**
  * @brief Obtiene la velocidad de bajada de una interfaz de red.
@@ -117,11 +101,11 @@ unsigned long get_bytes_received(const char* interface);
 double get_downloaded_bytes(const char* interface, int interval);
 
 /**
- * @brief Obtiene el consumo de energía del sistema desde /sys/class/power_supply.
+ * @brief Obtiene el consumo de energia del sistema desde /sys/class/power_supply/BAT0.
  *
- * Lee los valores de voltaje y corriente de la batería desde /sys/class/power_supply
- * y calcula el consumo de energía del sistema.
+ * Lee los valores de voltaje y corriente de la bateria desde /sys/class/power_supply/BAT0
+ * y calcula el consumo de energia del sistema.
  *
- * @return Consumo de energía en vatios, o -1.0 en caso de error.
+ * @return Consumo de energia en vatios, o -1.0 en caso de error.
  */
-double get_system_power_consumption();
+double get_battery_power_consumption();

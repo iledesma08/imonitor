@@ -1,6 +1,16 @@
 /**
  * @file expose_metrics.h
- * @brief Programa para leer el uso de CPU y memoria y exponerlos como métricas de Prometheus.
+ * @brief Funciones para exponer metricas via HTTP.
+ *
+ * Este archivo contiene las funciones necesarias para exponer las metricas
+ * recolectadas por el programa en un servidor HTTP en el puerto 8000.
+ *
+ * Las metricas se exponen en formato Prometheus, y se actualizan cada segundo.
+ *
+ * Para compilar el programa, se debe enlazar con las bibliotecas de Prometheus
+ *
+ * Las metricas se exponen a traves de una interfaz HTTP utilizando la biblioteca
+ * Prometheus C Client.
  */
 
 #include "metrics.h"
@@ -13,69 +23,61 @@
 #include <string.h>
 #include <unistd.h> // Para sleep
 
-#define BUFFER_SIZE 256
-
 /**
- * @brief Registra las métricas en el registro de coleccionistas de Prometheus. 
+ * @brief Registra las metricas en el registro de coleccionistas de Prometheus.
  */
 void register_metrics();
 
 /**
- * @brief Actualiza la métrica de uso de CPU.
+ * @brief Actualiza la metrica de uso de CPU.
  */
 void update_cpu_gauge();
 
 /**
- * @brief Actualiza la métrica de uso de memoria.
+ * @brief Actualiza la metrica de uso de memoria.
  */
 void update_memory_gauge();
 
 /**
- * @brief Actualiza la métrica de uso de disco.
+ * @brief Actualiza la metrica de uso de disco.
  */
 void update_disk_gauge();
 
 /**
- * @brief Actualiza la métrica de porcentaje de batería.
+ * @brief Actualiza la metrica de porcentaje de bateria.
  */
 void update_battery_gauge();
 
 /**
- * @brief Actualiza la métrica de temperatura de la CPU.
+ * @brief Actualiza la metrica de temperatura de la CPU.
  */
 void update_cpu_temperature_gauge();
 
 /**
- * @brief Actualiza la métrica de cantidad de procesos.
+ * @brief Actualiza las metricas de los procesos.
  */
-void update_process_count();
+void update_process_states_gauge();
 
 /**
- * @brief Actualiza la métrica de velocidad de subida.
- * @param interface Interfaz de red a monitorear.
- */
-void update_uploaded_bytes(const char* interface);
-
-/**
- * @brief Actualiza la métrica de velocidad de descarga.
+ * @brief Actualiza la metrica de velocidad de descarga.
  * @param interface Interfaz de red a monitorear.
  */
 void update_downloaded_bytes(const char* interface);
 
 /**
- * @brief Actualiza la métrica de potencia del sistema.
+ * @brief Actualiza la metrica de potencia del sistema.
  */
-void update_system_power_gauge();
+void update_battery_power_gauge();
 
 /**
- * @brief Función del hilo para exponer las métricas vía HTTP en el puerto 8000.
+ * @brief Funcion del hilo para exponer las metricas via HTTP en el puerto 8000.
  * @param arg Argumento no utilizado.
  * @return NULL
  */
 void* expose_metrics(void* arg);
 
 /**
- * @brief Inicializar mutex y métricas.
+ * @brief Inicializar mutex y metricas.
  */
 void init_metrics();
 
