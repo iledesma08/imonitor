@@ -16,6 +16,11 @@
 #define BUFFER_SIZE 256
 
 /**
+ * @brief Registra las métricas en el registro de coleccionistas de Prometheus. 
+ */
+void register_metrics();
+
+/**
  * @brief Actualiza la métrica de uso de CPU.
  */
 void update_cpu_gauge();
@@ -24,6 +29,38 @@ void update_cpu_gauge();
  * @brief Actualiza la métrica de uso de memoria.
  */
 void update_memory_gauge();
+
+/**
+ * @brief Actualiza la métrica de uso de disco.
+ */
+void update_disk_gauge();
+
+/**
+ * @brief Actualiza la métrica de porcentaje de batería.
+ */
+void update_battery_gauge();
+
+/**
+ * @brief Actualiza la métrica de temperatura de la CPU.
+ */
+void update_cpu_temperature_gauge();
+
+/**
+ * @brief Actualiza la métrica de cantidad de procesos.
+ */
+void update_process_count_gauge();
+
+/**
+ * @brief Actualiza la métrica de velocidad de subida.
+ * @param interface Interfaz de red a monitorear.
+ */
+void update_upload_speed_gauge(const char* interface);
+
+/**
+ * @brief Actualiza la métrica de velocidad de descarga.
+ * @param interface Interfaz de red a monitorear.
+ */
+void update_downloaded_bytes_gauge(const char* interface);
 
 /**
  * @brief Función del hilo para exponer las métricas vía HTTP en el puerto 8000.

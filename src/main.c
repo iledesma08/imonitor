@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #define SLEEP_TIME 1
+#define RED_INTERFACE "wlp0s20f3"
 
 int main(int argc, char* argv[])
 {
@@ -26,6 +27,12 @@ int main(int argc, char* argv[])
     {
         update_cpu_gauge();
         update_memory_gauge();
+        update_disk_gauge();
+        update_battery_gauge();
+        update_cpu_temperature_gauge();
+        update_process_count_gauge();
+        update_upload_speed_gauge(RED_INTERFACE);
+        update_downloaded_bytes_gauge(RED_INTERFACE);
         sleep(SLEEP_TIME);
     }
 

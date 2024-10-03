@@ -11,7 +11,7 @@ find_library(PROM_LIB prom REQUIRED)
 find_library(PROMHTTP_LIB promhttp REQUIRED)
 find_library(MICROHTTPD_LIB microhttpd REQUIRED)
 
-add_executable(so_i_24_iledesma08
+add_executable(prom-c-client
     include/expose_metrics.h
     include/metrics.h
     src/expose_metrics.c
@@ -19,4 +19,4 @@ add_executable(so_i_24_iledesma08
     src/metrics.c)
 
 # Link the libraries
-target_link_libraries(so_i_24_iledesma08 ${PROM_LIB} ${PROMHTTP_LIB} ${MICROHTTPD_LIB} pthread)
+target_link_libraries(prom-c-client ${PROM_LIB} ${PROMHTTP_LIB} ${MICROHTTPD_LIB} pthread)
