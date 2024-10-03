@@ -18,6 +18,9 @@
 # Utilities directory
 /utilities/
 
+# Data directory
+/data/
+
 # Dependency files
 *.d
 
