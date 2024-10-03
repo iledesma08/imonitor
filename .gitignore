@@ -15,9 +15,6 @@
 # External directoy
 /external/
 
-# Utilities directory
-/utilities/
-
 # Dependency files
 *.d
 
