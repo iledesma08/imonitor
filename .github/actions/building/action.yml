@@ -7,11 +7,10 @@ runs:
       - name: Compile
         shell: bash
         run: |
-          SRC_FOLDER=$(pwd)/src
           PROM_FOLDER=$(pwd)/prom
           PROMHTTP_FOLDER=$(pwd)/promhttp
 
-          cd $PROM_FOLDER
+          $PROM_FOLDER
           mkdir build
           cd build
           cmake ..
@@ -21,7 +20,7 @@ runs:
           cd ..
           cd ..
           
-          cd $PROMHTTP_FOLDER
+          $PROMHTTP_FOLDER
           mkdir build
           cd build
           cmake ..
