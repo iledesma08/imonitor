@@ -7,8 +7,8 @@ runs:
       - name: Compile
         shell: bash
         run: |
-          PROM_FOLDER=$(pwd)/lib/prom
-          PROMHTTP_FOLDER=$(pwd)/lib/promhttp
+          PROM_FOLDER=/lib/prom
+          PROMHTTP_FOLDER=/lib/promhttp
 
           $PROM_FOLDER
           mkdir build
