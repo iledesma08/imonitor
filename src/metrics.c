@@ -1,4 +1,4 @@
-/* 
+/*
  * Este archivo contiene las implementaciones de las funciones que obtienen las métricas del sistema.
  * Las métricas que se obtienen son:
  * - Uso de memoria
@@ -19,7 +19,7 @@ double get_memory_usage()
     char buffer[BUFFER_SIZE];
     unsigned long long total_mem = 0, free_mem = 0;
 
-    /* Abrir el archivo /proc/meminfo */ 
+    /* Abrir el archivo /proc/meminfo */
     fp = fopen("/proc/meminfo", "r");
     if (fp == NULL)
     {
