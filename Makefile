@@ -1,6 +1,6 @@
 # Variables
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -Iinclude
 SRCDIR = src
 OBJDIR = build
 TARGET = my_program
@@ -27,3 +27,4 @@ $(OBJDIR):
 # Limpiar archivos generados
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
+
