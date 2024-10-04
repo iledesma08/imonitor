@@ -18,6 +18,9 @@
 # Utilities directory
 /utilities/
 
+# Libraries directory
+/lib/
+
 # Data directory
 /data/
 
@@ -37,3 +40,8 @@
 # cache
 .cache/
 
+# Scripts
+*.sh
+
+# Notes
+*.txt
