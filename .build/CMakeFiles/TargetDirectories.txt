@@ -1,3 +1,0 @@
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/build/CMakeFiles/prom-c-client.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/build/CMakeFiles/edit_cache.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/build/CMakeFiles/rebuild_cache.dir

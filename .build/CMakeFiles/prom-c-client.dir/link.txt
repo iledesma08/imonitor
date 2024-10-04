@@ -1,1 +1,0 @@
-/usr/bin/cc "CMakeFiles/prom-c-client.dir/src/expose_metrics.c.o" "CMakeFiles/prom-c-client.dir/src/main.c.o" "CMakeFiles/prom-c-client.dir/src/metrics.c.o" -o prom-c-client  -Wl,-rpath,/usr/local/lib /usr/local/lib/libprom.so /usr/local/lib/libpromhttp.so /usr/lib/x86_64-linux-gnu/libmicrohttpd.so -lpthread 
