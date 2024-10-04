@@ -6,21 +6,21 @@
 #include "expose_metrics.h"
 #include <stdbool.h>
 
-/** 
+/**
  * @brief Interfaz de red para monitorear la velocidad de descarga.
- * 
+ *
  * Cambiar a la interfaz de red que se desea monitorear.
- * 
+ *
  * Para obtener la interfaz de red correcta, ejecutar el comando `ip a` en la terminal.
  */
 #define RED_INTERFACE "wlp0s20f3"
 
 /**
  * @brief Programa principal.
- * 
- * @param argc 
- * @param argv 
- * @return int 
+ *
+ * @param argc
+ * @param argv
+ * @return int
  */
 int main(int argc, char* argv[])
 {
