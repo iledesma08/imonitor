@@ -95,6 +95,14 @@ void get_process_states(int* total, int* suspended, int* ready, int* uninterrupt
                         int* running);
 
 /**
+ * @brief Obtiene la cantidad de bytes recibidos por una interfaz de red.
+ *
+ * @param interface
+ * @return unsigned long
+ */
+unsigned long get_bytes_received(const char* interface);
+
+/**
  * @brief Obtiene la velocidad de bajada de una interfaz de red.
  *
  * Lee la cantidad de bytes recibidos por una interfaz de red en dos momentos

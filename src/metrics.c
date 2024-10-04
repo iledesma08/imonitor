@@ -238,6 +238,33 @@ void get_process_states(int* total, int* suspended, int* ready, int* uninterrupt
     *running = *total - *suspended - *ready - *uninterruptible - *stopped - *zombie;
 }
 
+unsigned long get_bytes_received(const char* interface)
+{
+    FILE* fp = fopen("/proc/net/dev", "r");
+    if (fp == NULL)
+    {
+        perror("Error al abrir /proc/net/dev");
+        return -1;
+    }
+    char buffer[BUFFER_SIZE];
+    unsigned long bytes_received = 0;
+    // Saltar las dos primeras lineas de encabezado
+    fgets(buffer, sizeof(buffer), fp);
+    fgets(buffer, sizeof(buffer), fp);
+    // Buscar la interfaz deseada
+    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    {
+        if (strstr(buffer, interface) != NULL)
+        {
+            // Parsear la linea para obtener los bytes recibidos (el primer campo despues del nombre de la interfaz)
+            sscanf(buffer, "%*s %lu", &bytes_received);
+            break;
+        }
+    }
+    fclose(fp);
+    return bytes_received;
+}
+
 double get_downloaded_bytes(const char* interface, int interval)
 {
     unsigned long bytes1 = get_bytes_received(interface);
