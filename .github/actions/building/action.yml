@@ -8,9 +8,30 @@ runs:
         shell: bash
         run: |
           SRC_FOLDER=$(pwd)/src
-          
-          # TODO - Install prom and promhttp with cmake
-          # TODO - Use cmake to compile main program
+          PROM_FOLDER=$(pwd)/prom
+          PROMHTTP_FOLDER=$(pwd)/promhttp
 
-           
+          cd $PROM_FOLDER
+          mkdir build
+          cd build
+          cmake ..
+          make
+          sudo make install
+
+          cd ..
+          cd ..
+          
+          cd $PROMHTTP_FOLDER
+          mkdir build
+          cd build
+          cmake ..
+          make
+          sudo make install
+
+          cd..
+          cd..
+
+          mkdir build
+          cd build
+          cmake ..
           make all
