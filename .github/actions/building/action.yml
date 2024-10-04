@@ -8,6 +8,8 @@ runs:
         shell: bash
         run: |
           SRC_FOLDER=$(pwd)/src
+          LIB_FOLDER=$(pwd)/lib
+          cd $LIB_FOLDER/prom/
           
           
           make all
