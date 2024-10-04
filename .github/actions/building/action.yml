@@ -8,8 +8,9 @@ runs:
         shell: bash
         run: |
           SRC_FOLDER=$(pwd)/src
-          LIB_FOLDER=$(pwd)/lib
-          cd $LIB_FOLDER/prom/
           
-          
+          # TODO - Install prom and promhttp with cmake
+          # TODO - Use cmake to compile main program
+
+           
           make all

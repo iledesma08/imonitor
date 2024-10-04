@@ -1,9 +1,0 @@
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/promhttp.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/package.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/package_source.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/edit_cache.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/rebuild_cache.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/list_install_components.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/install.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/install/local.dir
-/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/build/CMakeFiles/install/strip.dir

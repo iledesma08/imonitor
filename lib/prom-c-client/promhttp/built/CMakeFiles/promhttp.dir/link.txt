@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -shared -Wl,-soname,libpromhttp.so -o libpromhttp.so CMakeFiles/promhttp.dir/src/promhttp.c.o   -L/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/../prom/build  -Wl,-rpath,/home/ignacio/Facultad/Operativos1/Practico/lab1/so-i-24-iledesma08/lib/prometheus-client-c/promhttp/../prom/build: -lprom -lmicrohttpd 
