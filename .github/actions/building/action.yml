@@ -7,10 +7,7 @@ runs:
       - name: Compile
         shell: bash
         run: |
-          PROM_FOLDER=/lib/prom
-          PROMHTTP_FOLDER=/lib/promhttp
-
-          $PROM_FOLDER
+          cd $(pwd)/lib/prom-c-client/prom
           mkdir build
           cd build
           cmake ..
@@ -20,13 +17,14 @@ runs:
           cd ..
           cd ..
           
-          $PROMHTTP_FOLDER
+          cd promhttp
           mkdir build
           cd build
           cmake ..
           make
           sudo make install
 
+          cd ..
           cd ..
           cd ..
           cd ..
