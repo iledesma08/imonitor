@@ -23,7 +23,18 @@
 #include <string.h>
 #include <unistd.h> // Para sleep
 
+/**
+ * @brief Mutex para sincronizacion de hilos.
+ * 
+ * Se utiliza para proteger el acceso a las metricas.
+ */
 #define METRICS_COUNT 14
+
+/**
+ * @brief Tiempo de espera entre actualizaciones de metricas.
+ * 
+ * Se actualizan cada segundo.
+ */
 #define SLEEP_TIME 1
 
 /**

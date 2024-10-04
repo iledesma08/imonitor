@@ -18,6 +18,12 @@
 #include <sys/statvfs.h>
 #include <unistd.h>
 
+/**
+ * @def BUFFER_SIZE
+ * @brief El tamaño del buffer utilizado para almacenar datos.
+ *
+ * Este macro define que el tamaño del buffer será de 512 bytes.
+ */
 #define BUFFER_SIZE 512
 
 /**
