@@ -23,6 +23,9 @@
 #include <string.h>
 #include <unistd.h> // Para sleep
 
+#define METRICS_COUNT 14
+#define SLEEP_TIME 1
+
 /**
  * @brief Registra las metricas en el registro de coleccionistas de Prometheus.
  */

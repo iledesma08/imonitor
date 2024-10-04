@@ -6,7 +6,6 @@
 #include "expose_metrics.h"
 #include <stdbool.h>
 
-#define SLEEP_TIME 1
 #define RED_INTERFACE "wlp0s20f3"
 
 int main(int argc, char* argv[])

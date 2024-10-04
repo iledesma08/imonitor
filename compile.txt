@@ -1,5 +1,0 @@
-gcc -std=c11 -Iinclude -o executable src/expose_metrics.c src/main.c src/metrics.c -lpthread -lprom -lpromhttp -lmicrohttpd
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-chmod +x start.sh
-./start.sh

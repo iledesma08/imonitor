@@ -1,3 +1,16 @@
+/* 
+ * Este archivo contiene las implementaciones de las funciones que obtienen las métricas del sistema.
+ * Las métricas que se obtienen son:
+ * - Uso de memoria
+ * - Uso de CPU
+ * - Uso de disco
+ * - Porcentaje de batería
+ * - Temperatura de la CPU
+ * - Estados de los procesos
+ * - Velocidad de descarga en una interfaz de red
+ * - Consumo de energía de la batería
+ */
+
 #include "metrics.h"
 
 double get_memory_usage()
@@ -6,7 +19,7 @@ double get_memory_usage()
     char buffer[BUFFER_SIZE];
     unsigned long long total_mem = 0, free_mem = 0;
 
-    // Abrir el archivo /proc/meminfo
+    /* Abrir el archivo /proc/meminfo */ 
     fp = fopen("/proc/meminfo", "r");
     if (fp == NULL)
     {
@@ -14,29 +27,29 @@ double get_memory_usage()
         return -1.0;
     }
 
-    // Leer los valores de memoria total y disponible
+    /* Leer los valores de memoria total y disponible */
     while (fgets(buffer, sizeof(buffer), fp) != NULL)
     {
         if (sscanf(buffer, "MemTotal: %llu kB", &total_mem) == 1)
         {
-            continue; // MemTotal encontrado
+            continue; /* MemTotal encontrado */
         }
         if (sscanf(buffer, "MemAvailable: %llu kB", &free_mem) == 1)
         {
-            break; // MemAvailable encontrado, podemos dejar de leer
+            break; /* MemAvailable encontrado, podemos dejar de leer */
         }
     }
 
     fclose(fp);
 
-    // Verificar si se encontraron ambos valores
+    /* Verificar si se encontraron ambos valores */
     if (total_mem == 0 || free_mem == 0)
     {
         fprintf(stderr, "Error al leer la informacion de memoria desde /proc/meminfo\n");
         return -1.0;
     }
 
-    // Calcular el porcentaje de uso de memoria
+    /* Calcular el porcentaje de uso de memoria */
     double used_mem = total_mem - free_mem;
     double mem_usage_percent = (used_mem / total_mem) * 100.0;
 
@@ -51,7 +64,7 @@ double get_cpu_usage()
     unsigned long long totald, idled;
     double cpu_usage_percent;
 
-    // Abrir el archivo /proc/stat
+    /* Abrir el archivo /proc/stat */
     FILE* fp = fopen("/proc/stat", "r");
     if (fp == NULL)
     {
@@ -68,7 +81,7 @@ double get_cpu_usage()
     }
     fclose(fp);
 
-    // Analizar los valores de tiempo de CPU
+    /* Analizar los valores de tiempo de CPU */
     int ret = sscanf(buffer, "cpu  %llu %llu %llu %llu %llu %llu %llu %llu", &user, &nice, &system, &idle, &iowait,
                      &irq, &softirq, &steal);
     if (ret < 8)
@@ -77,7 +90,7 @@ double get_cpu_usage()
         return -1.0;
     }
 
-    // Calcular las diferencias entre las lecturas actuales y anteriores
+    /* Calcular las diferencias entre las lecturas actuales y anteriores */
     unsigned long long prev_idle_total = prev_idle + prev_iowait;
     unsigned long long idle_total = idle + iowait;
 
@@ -96,10 +109,10 @@ double get_cpu_usage()
         return -1.0;
     }
 
-    // Calcular el porcentaje de uso de CPU
+    /* Calcular el porcentaje de uso de CPU */
     cpu_usage_percent = ((double)(totald - idled) / totald) * 100.0;
 
-    // Actualizar los valores anteriores para la siguiente lectura
+    /* Actualizar los valores anteriores para la siguiente lectura */
     prev_user = user;
     prev_nice = nice;
     prev_system = system;
@@ -169,7 +182,7 @@ double get_cpu_temperature()
 
     fclose(fp);
 
-    // Convertimos la temperatura de miligrados Celsius a grados Celsius
+    /* Convertimos la temperatura de miligrados Celsius a grados Celsius */
     return temperature_millidegrees / 1000;
 }
 
@@ -187,7 +200,7 @@ void get_process_states(int* total, int* suspended, int* ready, int* uninterrupt
     *total = 0;
     *suspended = 0;
     *ready = 0;
-    *uninterruptible = 0; // Uninterrumpible sleep
+    *uninterruptible = 0; /* Uninterrumpible sleep */
     *stopped = 0;
     *zombie = 0;
     *running = 0;
@@ -238,37 +251,6 @@ void get_process_states(int* total, int* suspended, int* ready, int* uninterrupt
     *running = *total - *suspended - *ready - *uninterruptible - *stopped - *zombie;
 }
 
-unsigned long get_bytes_received(const char* interface)
-{
-    FILE* fp = fopen("/proc/net/dev", "r");
-    if (fp == NULL)
-    {
-        perror("Error al abrir /proc/net/dev");
-        return -1;
-    }
-
-    char buffer[BUFFER_SIZE];
-    unsigned long bytes_received = 0;
-
-    // Saltar las dos primeras lineas de encabezado
-    fgets(buffer, sizeof(buffer), fp);
-    fgets(buffer, sizeof(buffer), fp);
-
-    // Buscar la interfaz deseada
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
-    {
-        if (strstr(buffer, interface) != NULL)
-        {
-            // Parsear la linea para obtener los bytes recibidos (el primer campo despues del nombre de la interfaz)
-            sscanf(buffer, "%*s %lu", &bytes_received);
-            break;
-        }
-    }
-
-    fclose(fp);
-    return bytes_received;
-}
-
 double get_downloaded_bytes(const char* interface, int interval)
 {
     unsigned long bytes1 = get_bytes_received(interface);
@@ -277,10 +259,10 @@ double get_downloaded_bytes(const char* interface, int interval)
 
     if (bytes1 == (unsigned long)-1 || bytes2 == (unsigned long)-1)
     {
-        return -1.0; // Error al obtener los bytes recibidos
+        return -1.0; /* Error al obtener los bytes descargados */
     }
 
-    return (double)(bytes2 - bytes1) / interval; // Velocidad en bytes por segundo
+    return (double)(bytes2 - bytes1) / interval; /* Bytes descargados por segundo */
 }
 
 double get_battery_power_consumption()
@@ -288,7 +270,7 @@ double get_battery_power_consumption()
     FILE* fp;
     int power;
 
-    // Abrir el archivo que contiene la potencia en microvatios
+    /* Abrir el archivo que contiene la potencia en microvatios */
     fp = fopen("/sys/class/power_supply/BAT0/power_now", "r");
     if (fp == NULL)
     {
@@ -296,7 +278,7 @@ double get_battery_power_consumption()
         return -1.0;
     }
 
-    // Leer la potencia en microvatios
+    /* Leer la potencia en microvatios */
     if (fscanf(fp, "%d", &power) != 1)
     {
         perror("Error al leer la potencia");
@@ -306,6 +288,5 @@ double get_battery_power_consumption()
 
     fclose(fp);
 
-    // Convertir microvatios a vatios
-    return (double)power / 1e6; // De microvatios a vatios
+    return (double)power / 1e6; /* Convertir microvatios a vatios */
 }

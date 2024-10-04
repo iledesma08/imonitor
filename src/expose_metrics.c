@@ -1,6 +1,4 @@
 #include "expose_metrics.h"
-#define METRICS_COUNT 14
-#define SLEEP_TIME 1
 
 /** Mutex para sincronizacion de hilos */
 pthread_mutex_t lock;
@@ -215,7 +213,7 @@ void* expose_metrics(void* arg)
     // Mantenemos el servidor en ejecucion
     while (1)
     {
-        sleep(1);
+        sleep(SLEEP_TIME);
     }
 
     // Nunca deberia llegar aqui
