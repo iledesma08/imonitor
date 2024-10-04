@@ -19,7 +19,7 @@
 /utilities/
 
 # Libraries directory
-/lib/
+#/lib/
 
 # Data directory
 /data/
