@@ -7,4 +7,6 @@ runs:
       - name: Compile
         shell: bash
         run: |
-          make -C $(pwd)/build all
+          SRC_FOLDER=$(pwd)/src
+
+          make all
