@@ -24,9 +24,7 @@
 #include <unistd.h> // Para sleep
 
 /**
- * @brief Mutex para sincronizacion de hilos.
- *
- * Se utiliza para proteger el acceso a las metricas.
+ * @brief Cantida de metricas a exponer.
  */
 #define METRICS_COUNT 14
 
