@@ -27,9 +27,6 @@ static prom_gauge_t* stopped_processes_metric;
 static prom_gauge_t* zombie_processes_metric;
 static prom_gauge_t* running_processes_metric;
 
-/** Metrica de Prometheus para la velocidad de subida */
-static prom_gauge_t* uploaded_bytes_metric;
-
 /** Metrica de Prometheus para la velocidad de descarga */
 static prom_gauge_t* downloaded_bytes_metric;
 
