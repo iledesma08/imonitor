@@ -34,7 +34,7 @@
  *
  * @return Uso de memoria como porcentaje (0.0 a 100.0), o -1.0 en caso de error.
  */
-double get_memory_usage();
+double get_memory_usage(void);
 
 /**
  * @brief Obtiene el porcentaje de uso de CPU desde /proc/stat.
@@ -44,7 +44,7 @@ double get_memory_usage();
  *
  * @return Uso de CPU como porcentaje (0.0 a 100.0), o -1.0 en caso de error.
  */
-double get_cpu_usage();
+double get_cpu_usage(void);
 
 /**
  * @brief Obtiene el porcentaje de uso de disco desde /proc/statvfs.
@@ -54,7 +54,7 @@ double get_cpu_usage();
  *
  * @return Uso de disco como porcentaje (0.0 a 100.0), o -1.0 en caso de error.
  */
-double get_disk_usage();
+double get_disk_usage(void);
 
 /**
  * @brief Obtiene el porcentaje de bateria restante desde /sys/class/power_supply.
@@ -64,7 +64,7 @@ double get_disk_usage();
  *
  * @return Porcentaje de bateria restante (0.0 a 100.0), o -1.0 en caso de error.
  */
-double get_battery_percentage();
+double get_battery_percentage(void);
 
 /**
  * @brief Obtiene la temperatura de la CPU desde /sys/class/thermal.
@@ -74,7 +74,7 @@ double get_battery_percentage();
  *
  * @return Temperatura de la CPU en grados Celsius, o -1.0 en caso de error.
  */
-double get_cpu_temperature();
+double get_cpu_temperature(void);
 
 /**
  * @brief Obtiene la cantidad de procesos en cada estado desde /proc.
@@ -122,4 +122,4 @@ double get_downloaded_bytes(const char* interface, int interval);
  *
  * @return Consumo de energia en vatios, o -1.0 en caso de error.
  */
-double get_battery_power_consumption();
+double get_battery_power_consumption(void);

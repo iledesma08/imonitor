@@ -7,15 +7,6 @@
 #include <stdbool.h>
 
 /**
- * @brief Interfaz de red para monitorear la velocidad de descarga.
- *
- * Cambiar a la interfaz de red que se desea monitorear.
- *
- * Para obtener la interfaz de red correcta, ejecutar el comando `ip a` en la terminal.
- */
-#define RED_INTERFACE "wlp0s20f3"
-
-/**
  * @brief Programa principal.
  *
  * @param argc
@@ -44,7 +35,7 @@ int main(int argc, char* argv[])
         update_battery_gauge();
         update_cpu_temperature_gauge();
         update_process_states_gauge();
-        update_downloaded_bytes(RED_INTERFACE);
+        update_downloaded_bytes();
         update_battery_power_gauge();
         sleep(SLEEP_TIME);
     }

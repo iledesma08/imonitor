@@ -167,9 +167,9 @@ void update_process_states_gauge()
     }
 }
 
-void update_downloaded_bytes(const char* interface)
+void update_downloaded_bytes()
 {
-    double speed = get_downloaded_bytes(interface, 1); // Intervalo de 1 segundo
+    double speed = get_downloaded_bytes(RED_INTERFACE, 1); // Intervalo de 1 segundo
     if (speed >= 0)
     {
         pthread_mutex_lock(&lock);
